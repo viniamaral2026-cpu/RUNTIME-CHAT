@@ -1,0 +1,32 @@
+{
+  "name": "runtime-chat",
+  "version": "1.0.0",
+  "description": "Plataforma de Inteligência Artificial conversacional RUNTIME-CHAT",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniamaral2026-cpu/RUNTIME-CHAT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viniamaral2026-cpu/RUNTIME-CHAT/issues"
+  },
+  "homepage": "https://github.com/viniamaral2026-cpu/RUNTIME-CHAT#readme",
+  "dependencies": {
+    "next": "14.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.2"
+  }
+}
