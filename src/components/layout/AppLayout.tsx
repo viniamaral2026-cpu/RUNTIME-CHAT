@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import React, { useState } from 'react'
+import { Menu, ChevronDown, ChevronUp } from 'lucide-react'
 import { HeaderDesktop } from './HeaderDesktop'
 import { SidebarDesktop, SidebarCollapsed } from './SidebarDesktop'
 
@@ -9,80 +9,63 @@ interface AppLayoutProps {
   userName: string
 }
 
-interface PageRoute {
-  key: string
-  href: string
-  title: string
-}
-
 export const AppLayout: React.FC<AppLayoutProps> = ({
   children,
   title,
   userName,
 }) => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false)
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'projects' | 'conversations' | 'files' | 'codex' | 'settings'>(
-    'dashboard'
-  )
-
-  const pageRoutes: PageRoute[] = [
-    { key: 'dashboard', href: '/dashboard', title: 'Dashboard' },
-    { key: 'projects', href: '/projects', title: 'Projetos' },
-    { key: 'conversations', href: '/conversations', title: 'Conversas' },
-    { key: 'files', href: '/files', title: 'Arquivos' },
-    { key: 'codex', href: '/codex', title: 'Codex' },
-    { key: 'settings', href: '/settings', title: 'Configurações' },
-  ]
-
-  const onPageSelect = (page: string) => {
-    setCurrentPage(page as 'dashboard' | 'projects' | 'conversations' | 'files' | 'codex' | 'settings')
-    console.log('Selecting page:', page)
-  }
-
-  const handleSearch = (query: string) => {
-    console.log('Searching:', query)
-  }
-
-  const handleNotifications = () => {
-    console.log('Opening notifications')
-  }
 
   return (
-    <div className="min-h-screen">
-      {/* Header - Desktop visible, Mobile hidden */}
+    <div className="min-h-screen bg-background">
+      {/* Header - mobile tem toggle, desktop continua visível */}
       <HeaderDesktop
         title={title}
         userName={userName}
-        onSearch={handleSearch}
-        onNotifications={handleNotifications}
         onMenuToggle={() => setIsMenuCollapsed((prev) => !prev)}
         isMenuOpen={isMenuCollapsed}
-        currentPage={currentPage}
-        onPageChange={onPageSelect}
+        currentPage="dashboard"
+        onPageChange={() => {}}
+        onSearch={() => {}}
+        onNotifications={() => {}}
       />
 
-      {/* Sidebar - Desktop version based on collapse state */}
-      <SidebarDesktop
-        isCollapsed={isMenuCollapsed}
-        onToggleCollapse={() => setIsMenuCollapsed((prev) => !prev)}
-        currentPage={currentPage}
-        onPageSelect={onPageSelect}
-      />
+      {/* Sidebar - mobile: drawer via transform, desktop: sidebar fixo */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-40 bg-background transform translate-x-full duration-300 ease-in-out ${
+            isMenuCollapsed ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-full`}
+      >
+        <SidebarDesktop
+          isCollapsed={isMenuCollapsed}
+          onToggleCollapse={() => setIsMenuCollapsed((prev) => !prev)}
+          currentPage="dashboard"
+          onPageSelect={() => {}}
+        />
+      </aside>
 
       {/* Main content area */}
-      <div className="flex flex-col lg:flex-start">
-        {/* Mobile sidebar toggle button */}
+      <div className="flex flex-col lg:flex-start overflow-x-hidden">
+        {/* Mobile menu toggle - só aparece em telas < lg */}
         <button
-          className="lg:hidden w-6 h-6 p-2 rounded-md hover:bg-primary-100 transition-colors"
+          className="lg:hidden absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 p-2 rounded-md hover:bg-primary-100 transition-colors"
           onClick={() => setIsMenuCollapsed((prev) => !prev)}
-          aria-label="Abrir menu lateral"
+          aria-label="Abrir menu"
         >
           {isMenuCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
         </button>
 
-        {/* Content area */}
-        <div className="flex-1 p-6 overflow-x-auto">
-          {children}
+        {/* Content area - em mobile ocupa 100%, em desktop lado a lado com sidebar */}
+        <div className="flex flex-col lg:flex-start w-full">
+          {/* Mobile: content full width with reduced padding when sidebar open */}
+          {isMenuCollapsed ? (
+            <div className="p-4">{children}</div>
+          ) : (
+            <div className="flex-1 p-6 overflow-x-auto">
+              {children}
+            </div>
+          )}
         </div>
       </div>
     </div>
