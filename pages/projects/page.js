@@ -24,7 +24,7 @@ const Projects = () => {
       {projects.length === 0 && (
         <div className="empty-state">
           <p>Nenhum projeto encontrado.</p>
-          <button className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-200 transition-colors">
+          <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-700 transition-colors">
             Criar primeiro projeto
           </button>
         </div>
@@ -39,7 +39,7 @@ const Projects = () => {
             <h3 className="text-xl font-medium text-primary-900 group-hover:text-primary-700 transition-colors">
               {project.name}
             </h3>
-            <p className="text-muted-foreground mt-2 line-clamp-2">
+            <p className="text-text-muted mt-2 line-clamp-2">
               {project.description}
             </p>
             <div className="mt-4">

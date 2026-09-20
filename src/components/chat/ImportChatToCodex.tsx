@@ -39,7 +39,7 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
           <div className="relative w-full max-w-md mx-auto mt-20 overflow-y-auto sm:mt-0 rounded-lg bg-white shadow-xl ring-1 ring-black ring-opacity-5">
             <button
               type="button"
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-500"
+              className="absolute top-2 right-2 text-text-muted hover:text-text-muted-foreground"
               onClick={onClose}
               aria-label="Fechar"
             >
@@ -50,13 +50,13 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-text-muted-700 mb-1">
                   Projeto
                 </label>
                 <select
                   value={selectedProject}
                   onChange={(e) => setSelectedProject(e.target.value as string | undefined)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary"
                 >
                   <option value="">Selecione um projeto</option>
                   {projects.map((project) => (
@@ -67,13 +67,13 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-text-muted-700 mb-1">
                   Workspace Codex
                 </label>
                 <select
                   value={selectedWorkspace}
                   onChange={(e) => setSelectedWorkspace(e.target.value as string | undefined)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary"
                 >
                   <option value="">Selecione um workspace</option>
                   {workspaces.map((workspace) => (
@@ -84,7 +84,7 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
                 </select>
               </div>
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-muted-500">
                   A conversa "{conversationTitle}" será importada com suas mensagens,
                   arquivos e contexto para o workspace selecionado.
                 </p>
@@ -93,14 +93,14 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 rounded-md"
+                  className="px-4 py-2 text-text-muted-600 hover:text-text-muted-foreground rounded-md"
                 >
                   Cancelar
                 </button>
                 <button
                   type="button"
                   onClick={handleImport}
-                  className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-700"
                 >
                   Importar
                 </button>
@@ -115,7 +115,7 @@ export const ImportChatToCodex: React.FC<ImportChatToCodexProps> = ({
         onClick={() => setShowModal(false)}
       />
       <button
-        className="relative z-10 inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+        className="relative z-10 inline-flex items-center rounded-md bg-primary text-sm font-medium text-white px-4 py-2 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         onClick={() => setShowModal(true)}
         aria-label="Importar conversa para Codex"
       >

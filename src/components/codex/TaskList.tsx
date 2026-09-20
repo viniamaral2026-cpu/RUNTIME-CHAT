@@ -31,25 +31,25 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, onStatusChange, onDel
                 {task.title}
               </h3>
               {task.description && (
-                <p className="text-xs text-gray-500 line-clamp-1 mt-1">
+                <p className="text-xs text-text-muted line-clamp-1 mt-1">
                   {task.description}
                 </p>
               )}
             </div>
             <div className="flex items-center gap-2">
               <span
-                className={`px-2 py-0.5 text-xs rounded ${task.status === 'COMPLETED' ? 'bg-green-100 text-green-800' : task.status === 'FAILED' ? 'bg-red-100 text-red-800' : task.status === 'IN_PROGRESS' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}`}
+                className={`px-2 py-0.5 text-xs rounded ${task.status === 'COMPLETED' ? 'bg-success-100 text-success-800' : task.status === 'FAILED' ? 'bg-error-100 text-error-800' : task.status === 'IN_PROGRESS' ? 'bg-warning-100 text-warning-800' : 'bg-primary-100 text-primary-800'}`}
               >
                 {task.status}
               </span>
             </div>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-text-muted">
               Criado: {task.createdAt.toLocaleDateString()}
             </span>
             {task.completedAt && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-text-muted">
                 Concluído: {task.completedAt.toLocaleDateString()}
               </span>
             )}
@@ -57,35 +57,35 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, onStatusChange, onDel
           <div className="mt-2 flex gap-1">
             <button
               onClick={() => onStatusChange(task.id, 'TODO')}
-              className="px-1 py-0.5 text-xs rounded bg-gray-100 text-gray-600 hover:bg-gray-200"
+              className="px-1 py-0.5 text-xs rounded bg-primary-100 text-primary-800 hover:bg-primary-200"
               title="Voltar para TODO"
             >
               TODO
             </button>
             <button
               onClick={() => onStatusChange(task.id, 'IN_PROGRESS')}
-              className="px-1 py-0.5 text-xs rounded bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+              className="px-1 py-0.5 text-xs rounded bg-warning-100 text-warning-800 hover:bg-warning-200"
               title="Em andamento"
             >
               IN_PROGRESS
             </button>
             <button
               onClick={() => onStatusChange(task.id, 'REVIEW')}
-              className="px-1 py-0.5 text-xs rounded bg-blue-100 text-blue-800 hover:bg-blue-200"
+              className="px-1 py-0.5 text-xs rounded bg-primary-100 text-primary-800 hover:bg-primary-200"
               title="Em revisão"
             >
               REVIEW
             </button>
             <button
               onClick={() => onStatusChange(task.id, 'COMPLETED')}
-              className="px-1 py-0.5 text-xs rounded bg-green-100 text-green-800 hover:bg-green-200"
+              className="px-1 py-0.5 text-xs rounded bg-success-100 text-success-800 hover:bg-success-200"
               title="Concluído"
             >
               COMPLETED
             </button>
             <button
               onClick={() => onDelete(task.id)}
-              className="px-1 py-0.5 text-xs rounded bg-red-100 text-red-800 hover:bg-red-200"
+              className="px-1 py-0.5 text-xs rounded bg-error-100 text-error-800 hover:bg-error-200"
               title="Excluir"
             >
               <Trash className="w-3 h-3" />

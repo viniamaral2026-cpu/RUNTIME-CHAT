@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { apiClient } from '@/api/client'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -20,20 +21,22 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    // Simulated login - will be connected to API later
-    if (email === 'test@test.com' && password === 'password123') {
-      // Set auth cookie and redirect
-      document.cookie = 'session-token=demo-token; path=/; max-age=86400'
+    try {
+      const data = await apiClient.auth.login(email, password)
+      // Set auth cookie from backend response
+      if (data?.session_token) {
+        document.cookie = `session-token=${data.session_token}; path=/; max-age=86400`
+      }
       setRedirectAfterLogin('/chat')
       window.location.href = '/chat'
-    } else {
-      setError('E-mail ou senha inválidos')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'E-mail ou senha inválidos')
     }
     setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-white p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-background p-8 flex items-center justify-center">
       <div className="w-full max-w-md space-y-6">
         <h2 className="text-2xl font-bold text-primary-900">Entrar</h2>
         
@@ -50,7 +53,7 @@ const Login = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full p-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary"
           />
           
           <div className="flex items-center justify-between">
@@ -60,7 +63,7 @@ const Login = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full p-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary"
             />
             <button
               type="button"
@@ -74,7 +77,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>

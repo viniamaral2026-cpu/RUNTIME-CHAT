@@ -23,7 +23,7 @@ const Codex = () => {
       {workspaces.length === 0 && (
         <div className="empty-state">
           <p>Nenhum workspace encontrado.</p>
-          <button className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-200 transition-colors">
+          <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-700 transition-colors">
             Criar Workspace
           </button>
         </div>
@@ -38,7 +38,7 @@ const Codex = () => {
             <h3 className="text-xl font-medium text-primary-900 group-hover:text-primary-700 transition-colors">
               {workspace.name}
             </h3>
-            <p className="text-muted-foreground mt-1">
+            <p className="text-text-muted mt-1">
               Status: <span className={workspace.status === 'ACTIVE' ? 'text-success' : 'text-warning'}>
                 {workspace.status}
               </span>

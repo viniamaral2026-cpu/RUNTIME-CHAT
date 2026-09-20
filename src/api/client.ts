@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api'
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.runtime.sbs'
 
 const responseHandler = async (response: Response) => {
   const data = await response.json()
@@ -67,4 +67,85 @@ export const apiClient = {
       return responseHandler(await fetch(`${API_BASE}/auth/sessions/revoke-all`, { method: 'POST' }))
     },
   },
+  conversations: {
+    list: async () => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/`, { method: 'GET' }))
+    },
+    create: async (title: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      }))
+    },
+    detail: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}`, { method: 'GET' }))
+    },
+    rename: async (id: string, newTitle: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}/rename`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newTitle }),
+      }))
+    },
+    archive: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}/archive`, { method: 'POST' }))
+    },
+    unarchive: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}/unarchive`, { method: 'POST' }))
+    },
+    pin: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}/pin`, { method: 'POST' }))
+    },
+    unpin: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/conversations/${id}/unpin`, { method: 'POST' }))
+    },
+  },
+  projects: {
+    list: async () => {
+      return responseHandler(await fetch(`${API_BASE}/projects/`, { method: 'GET' }))
+    },
+    create: async (name: string, protocol: string, description: string) => {
+      return responseHandler(await fetch(`${API_BASE}/projects/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, protocol, description }),
+      }))
+    },
+    detail: async (protocol: string) => {
+      return responseHandler(await fetch(`${API_BASE}/projects/${protocol}`, { method: 'GET' }))
+    },
+  },
+  files: {
+    list: async () => {
+      return responseHandler(await fetch(`${API_BASE}/files/`, { method: 'GET' }))
+    },
+    upload: async (file: File) => {
+      const formData = new FormData()
+      formData.append('file', file)
+      return responseHandler(await fetch(`${API_BASE}/files/upload`, {
+        method: 'POST',
+        body: formData,
+      }))
+    },
+    delete: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/files/${id}`, { method: 'DELETE' }))
+    },
+  },
+  codex: {
+    list: async () => {
+      return responseHandler(await fetch(`${API_BASE}/codex/`, { method: 'GET' }))
+    },
+    create: async (name: string, projectId: string | null) => {
+      return responseHandler(await fetch(`${API_BASE}/codex/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, projectId }),
+      }))
+    },
+    detail: async (id: string) => {
+      return responseHandler(await fetch(`${API_BASE}/codex/${id}`, { method: 'GET' }))
+    },
+  },
 }
+

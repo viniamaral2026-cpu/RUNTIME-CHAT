@@ -25,7 +25,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   const [importModal, setImportModal] = useState(false)
 
   return (
-    <div className="p-4 border-b border-primary-200">
+    <div className="p-4 border-b border-border">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Menu className="w-5 h-5" />
@@ -49,7 +49,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
               fill="currentColor"
               viewBox="0 0 24 24"
             >
-              <path d="M7 10l5 5 5-5M7 14l5-5 5 5M7 14l1 1m0 0l1-1m-1-1v2m2-2v-2m7 1l1 1m0 0l-1-1m1-1v2m2-2v-2m-7-1l-1 1m0 0l1-1m1 1v2m2-2v-2m-7-1l-1 1m0 0l1-1m1 1v2m2-2v-2"/>
+              <path d="M7 10l5 5 5-5M7 14l5-5 5 5M7 14l1 1m0 0l1-1m-1-1v2m2-2v-2m7 1l1 1m0 0l-1-1m1-1v2m2-2v-2m-7-1l-1 1m0 0l1-1m1 1v2m2-2v-2"/>
             </svg>
           )}
           {isPinned ? null : (
@@ -90,7 +90,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
             <button
               type="button"
               onClick={() => setImportModal(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-500"
+              className="absolute top-2 right-2 text-text-muted hover:text-text-muted-foreground"
               aria-label="Fechar"
             >
               <svg

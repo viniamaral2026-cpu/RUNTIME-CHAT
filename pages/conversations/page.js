@@ -1,16 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { apiClient } from '@/api/client'
 
 const Conversations = () => {
-  const [conversations, setConversations] = React.useState([])
-  const [loading, setLoading] = React.useState(true)
+  const [conversations, setConversations] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  React.useEffect(() => {
-    setConversations([
-      { id: '1', title: 'API Design', lastActivity: 'Hoje', status: 'ACTIVE' },
-      { id: '2', title: 'Projeto RUNTIME', lastActivity: 'Ontem', status: 'ACTIVE' },
-      { id: '3', title: 'Chat com IA', lastActivity: '02/09', status: 'ACTIVE' },
-    ])
-    setLoading(false)
+  useEffect(() => {
+    async function loadConversations() {
+      try {
+        const data = await apiClient.conversations.list()
+        setConversations(data || [])
+        setLoading(false)
+      } catch (err) {
+        console.error('Erro ao carregar conversas:', err)
+        setError('Erro ao carregar conversas')
+        setLoading(false)
+      }
+    }
+    loadConversations()
   }, [])
 
   if (loading) {
@@ -21,10 +29,16 @@ const Conversations = () => {
     <div className="p-8">
       <h1 className="text-3xl font-bold text-primary-900 mb-6">Minhas Conversas</h1>
 
+      {error && (
+        <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
+          {error}
+        </div>
+      )}
+
       {conversations.length === 0 && (
         <div className="empty-state">
           <p>Nenhuma conversa encontrada.</p>
-          <button className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-200 transition-colors">
+          <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-700 transition-colors">
             Nova Conversa
           </button>
         </div>
@@ -37,12 +51,12 @@ const Conversations = () => {
               <h3 className="text-xl font-medium text-primary-900 group-hover:text-primary-700 transition-colors">
                 {conversation.title}
               </h3>
-              <span className="text-sm text-muted-foreground status-badge status-{conversation.status.toLowerCase()}">
+              <span className="text-sm text-text-muted status-badge status-{conversation.status.toLowerCase()}">
                 {conversation.status}
               </span>
             </div>
-            <p className="text-muted-foreground mt-1 line-clamp-2">
-              {conversation.lastActivity}
+            <p className="text-text-muted mt-1 line-clamp-2">
+              {conversation.lastActivity || 'Atividade recente'}
             </p>
             <div>
               <button className="px-3 py-1 bg-primary-100 text-primary-800 rounded-xs text-xs hover:bg-primary-200 transition-colors">
