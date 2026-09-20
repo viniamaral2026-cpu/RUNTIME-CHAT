@@ -1,27 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [redirectAfterRegister, setRedirectAfterRegister] = useState('/chat')
+
+  useEffect(() => {
+    // Check if already authenticated
+    const token = typeof document !== 'undefined' ? document.cookie.replace(/(?:(?:^|^|\s)session-token\s*=\s*([^;]*).*$)|^.*$/, '$1') : ''
+    if (token) {
+      window.location.href = '/chat'
+    }
+  }, [])
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault()
+    setLoading(true)
+    setError('')
     
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem');
-      setLoading(false);
-      return;
+      setError('As senhas não coincidem')
+      setLoading(false)
+      return
     }
     
-    // Will be connected to /api/auth/register
-    setLoading(false);
-  };
+    if (!name || !email || !password) {
+      setError('Preencha todos os campos')
+      setLoading(false)
+      return
+    }
+    
+    // Simulated register - will connect to API later
+    setRedirectAfterRegister('/auth/login')
+    setLoading(false)
+    window.location.href = '/auth/login'
+  }
 
   return (
     <div className="min-h-screen bg-white p-8">
@@ -29,7 +46,7 @@ const Register = () => {
         <h2 className="text-2xl font-bold text-primary-900">Cadastro</h2>
         
         {error && (
-          <div className="bg-red-100 text-red-800 p-3 rounded-md">
+          <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
             {error}
           </div>
         )}
@@ -72,18 +89,19 @@ const Register = () => {
           
           <button
             type="submit"
+            disabled={loading}
             className="w-full px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           >
-            Criar conta
+            {loading ? 'Criando conta...' : 'Criar conta'}
           </button>
           
-          <div className="text-center text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground">
             <a href="/auth/login">Já tem uma conta? Entrar</a>
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

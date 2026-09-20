@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums - simplified
+enum UserRole { USER ADMIN SUPER_ADMIN }
+enum UserStatus { ACTIVE SUSPENDED DELETED }
+enum ConversationStatus { ACTIVE ARCHIVED DELETED }
+enum MessageRole { SYSTEM USER ASSISTANT }
+enum MessageStatus { PENDING COMPLETED FAILED }
+enum ProjectStatus { ACTIVE ARCHIVED DELETED }
+enum ProjectMemberRole { OWNER ADMIN MEMBER }
+enum FileStatus { UPLOADING READY FAILED DELETED }
+enum FileType { DOCUMENT IMAGE CODE }
+enum WorkspaceStatus { ACTIVE PAUSED ARCHIVED DELETED }
+enum TaskStatus { TODO IN_PROGRESS COMPLETED FAILED }
+enum TaskPriority { LOW MEDIUM HIGH }
+enum ChangeStatus { PROPOSED APPROVED REJECTED }
+enum SessionStatus { ACTIVE REVOKED EXPIRED }
+enum AuditAction { CREATE UPDATE DELETE LOGIN LOGOUT PASSWORD_CHANGE }
+
+// Simple models - only essential fields for now
+model User {
+  id               String   @id @default(uuid())
+  email            String   @unique
+  passwordHash     String   null
+  name             String   null
+  avatarUrl        String   null
+  role             UserRole @default(USER)
+  status           UserStatus @default(ACTIVE)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Session {
+  id              String   @id @default(uuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  tokenHash       String   @unique
+  status          SessionStatus @default(ACTIVE)
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+}
+
+model Conversation {
+  id                String   @id @default(uuid())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  title             String
+  status            ConversationStatus @default(ACTIVE)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Message {
+  id                 String   @id @default(uuid())
+  conversation       Conversation @relation(fields: [conversationId], references: [id])
+  conversationId     String
+  role               MessageRole
+  status             MessageStatus @default(PENDING)
+  content            String
+  createdAt          DateTime @default(now())
+}
+
+model FileAsset {
+  id               String   @id @default(uuid())
+  name             String
+  mimeType         String
+  size             Int
+  status           FileStatus @default(UPLOADING)
+  type             FileType @default(DOCUMENT)
+  createdAt        DateTime @default(now())
+}
+
+model Project {
+  id                String   @id @default(uuid())
+  name              String
+  slug              String   @unique
+  description       String   null
+  status            ProjectStatus @default(ACTIVE)
+  createdAt         DateTime @default(now())
+}
+
+model CodexWorkspace {
+  id                String   @id @default(uuid())
+  name              String
+  description       String   null
+  status            WorkspaceStatus @default(ACTIVE)
+  createdAt         DateTime @default(now())
+}
+
+model CodexTask {
+  id                String   @id @default(uuid())
+  title             String
+  status            TaskStatus @default(TODO)
+  createdAt         DateTime @default(now())
+}
+
+model CodeChange {
+  id                String   @id @default(uuid())
+  filePath          String
+  operation         ChangeStatus
+  status            ChangeStatus @default(PROPOSED)
+  createdAt         DateTime @default(now())
+}
+
+model TerminalExecution {
+  id                String   @id @default(uuid())
+  command           String
+  exitCode          Int?     null
+  durationMs        Int?     null
+  status            String   default("pending")
+  createdAt         DateTime @default(now())
+}
+
+model AuditLog {
+  id                String   @id @default(uuid())
+  action            AuditAction
+  createdAt         DateTime @default(now())
+}
