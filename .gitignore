@@ -2,6 +2,5 @@ node_modules/
 .next/
 *.local
 .env
+.env.local
 .vercel
-.env*
-/styles/tokens.css.bak
